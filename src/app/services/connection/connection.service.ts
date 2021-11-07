@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
-import { UserData } from '../models/userData';
+import { UserData } from '../../models/userData';
 
 declare let window: any;
 
@@ -9,7 +9,7 @@ declare let window: any;
 })
 export class ConnectionService {
   public account: any = null;
-  private readonly web3!: any;
+  readonly web3!: any;
   private enable: any;
 
   constructor() {
@@ -60,7 +60,7 @@ export class ConnectionService {
     return new Promise((resolve, reject) => {
       window.web3.eth.getBalance(account, function (err: any, balance: number) {
         if (!err) {
-          const retVal: UserData = { adrress: account, balance: +balance };
+          const retVal: UserData = { address: account, balance: +balance };
           resolve(retVal);
         } else {
           reject({ account: 'error', balance: 0 });

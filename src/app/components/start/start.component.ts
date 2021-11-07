@@ -1,25 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { UserData } from 'src/app/models/userData';
-import { ConnectionService } from 'src/app/services/connection.service';
+import { ConnectionService } from 'src/app/services/connection/connection.service';
+import { FibonacciService } from 'src/app/services/fibonacci/fibonacci.service';
 
 @Component({
   selector: 'app-start',
   templateUrl: './start.component.html',
-  styleUrls: ['./start.component.sass']
+  styleUrls: ['./start.component.sass'],
 })
 export class StartComponent implements OnInit {
-  private userData!: UserData;
+  userData!: UserData;
 
-  constructor(private connectionService: ConnectionService) { }
+  constructor(
+    private connectionService: ConnectionService,
+    private fibonacciService: FibonacciService
+  ) {}
 
   ngOnInit(): void {
-    this.getUserData()
+    this.getUserData();
   }
 
   async getUserData() {
     this.userData = await this.connectionService.getUserData();
-    console.log(this.userData);
-    
+    // this.fibonacciService.callFib(121).subscribe((data) => {
+    //   console.log(data);
+    // });
   }
-
 }

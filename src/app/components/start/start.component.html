@@ -1,1 +1,13 @@
-<p>start works!</p>
+<mat-card *ngIf="userData" id="UserCard">
+  <mat-card-title> User info </mat-card-title>
+  <mat-card-content>
+    <div class="row">
+      <div class="col1">User id:</div>
+      <div class="col2">{{userData.address}}</div>
+    </div>
+    <div class="row">
+      <div class="col1">Balance:</div>
+      <div class="col2">{{userData.balance}}</div>
+    </div>
+  </mat-card-content>
+</mat-card>
