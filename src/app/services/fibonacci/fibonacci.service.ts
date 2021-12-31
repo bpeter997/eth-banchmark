@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { ConnectionService } from '../connection/connection.service';
 
 const fiboAbi = require('../../../../truffle/build/contracts/Fibonacci.json');
@@ -22,17 +21,12 @@ export class FibonacciService {
    * @param from  - the adress of the caller
    * @returns
    */
-  generateFib(value: number, from: string): Observable<any> {
-    return new Observable((subscriber) => {
-      subscriber.next(
-        this.fiboContract.deployed().then(function (instance: any) {
+  generateFib(value: number, from: string): Promise<any> {
+    return this.fiboContract.deployed().then(function (instance: any) {
           return instance.generateFib(value, {
             from: from,
           });
         })
-      );
-      subscriber.complete();
-    });
   }
 
   /**
@@ -41,14 +35,9 @@ export class FibonacciService {
    * @param from  - the adress of the caller
    * @returns
    */
-   callFib(value: number): Observable<any> {
-    return new Observable((subscriber) => {
-      subscriber.next(
-        this.fiboContract.deployed().then(function (instance: any) {
-          return instance.callFib(value);
-        })
-      );
-      subscriber.complete();
-    });
+  callFib(value: number): Promise<any> {
+    return this.fiboContract
+      .deployed()
+      .then((instance: any) => instance.callFib(value));
   }
 }

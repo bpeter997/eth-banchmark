@@ -11,6 +11,7 @@ export class ConnectionService {
   public account: any = null;
   readonly web3!: any;
   private enable: any;
+  public onAccountChange!: () => Promise<void>;
 
   constructor() {
     if (window.ethereum === undefined) {
@@ -19,10 +20,16 @@ export class ConnectionService {
       if (typeof window.web3 !== 'undefined') {
         this.web3 = window.web3.currentProvider;
       } else {
-        this.web3 = new Web3.providers.HttpProvider('http://localhost:7545');
+        this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
       }
       window.web3 = new Web3(window.ethereum);
-      this.enable = this.enableMetaMaskAccount();
+      //this.enable = this.enableMetaMaskAccount();
+
+      window.ethereum.on('accountsChanged', () => {
+        this.account = null;
+        if (this.onAccountChange !== null) this.onAccountChange();
+      }
+      )
     }
   }
 
@@ -68,4 +75,5 @@ export class ConnectionService {
       });
     }) as Promise<UserData>;
   }
+
 }

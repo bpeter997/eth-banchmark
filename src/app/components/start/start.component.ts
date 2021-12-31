@@ -14,16 +14,20 @@ export class StartComponent implements OnInit {
   constructor(
     private connectionService: ConnectionService,
     private fibonacciService: FibonacciService
-  ) {}
+  ) {
+    this.connectionService.onAccountChange = this.getUserData.bind(this);
+  }
 
   ngOnInit(): void {
     this.getUserData();
   }
 
-  async getUserData() {
+  async getUserData(): Promise<void> {
     this.userData = await this.connectionService.getUserData();
-    // this.fibonacciService.callFib(121).subscribe((data) => {
-    //   console.log(data);
-    // });
+    console.log(this.userData);
+    this.fibonacciService.callFib(15).then((data) => {
+      console.log(data);
+
+    });
   }
 }
