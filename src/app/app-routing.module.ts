@@ -1,10 +1,10 @@
+import { InfoComponent } from './components/info/info.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StartComponent } from './components/start/start.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/start', pathMatch: 'full' },
-  { path: 'start', component: StartComponent },
+  { path: '', redirectTo: '/overview', pathMatch: 'full' },
+  { path: 'overview', component: InfoComponent },
 ];
 
 @NgModule({
