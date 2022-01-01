@@ -1,11 +1,11 @@
-<mat-card *ngIf="userData" id="UserCard">
+<mat-card *ngIf="userData" class="card">
   <mat-card-title> User info </mat-card-title>
   <mat-card-content>
-    <div id="ContentContainer">
+    <div class="container">
       <div>
-        <mat-icon id="PersonIcon" aria-hidden="false">person</mat-icon>
+        <mat-icon class="icon" aria-hidden="false">person</mat-icon>
       </div>
-      <div>
+      <div class="rowContainer">
         <div class="row">
           <div class="col1">User id:</div>
           <div class="col2">{{ userData.address }}</div>

@@ -1,8 +1,9 @@
+import { NetworkService } from './../../services/network/network.service';
 import { UserService } from './../../services/user/user.service';
 import { Component, OnInit } from '@angular/core';
 import { UserData } from 'src/app/models/userData';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { FibonacciService } from 'src/app/services/fibonacci/fibonacci.service';
+import { NetworkData } from 'src/app/models/networkData';
 
 @Component({
   selector: 'app-info',
@@ -11,9 +12,11 @@ import { FibonacciService } from 'src/app/services/fibonacci/fibonacci.service';
 })
 export class InfoComponent implements OnInit {
   userData?: UserData;
+  networkData?: NetworkData;
 
   constructor(
     private userService: UserService,
+    private networkService: NetworkService,
     private fibonacciService: FibonacciService
   ) {
     this.userService.onAccountChange = this.getUserData.bind(this);
@@ -29,7 +32,6 @@ export class InfoComponent implements OnInit {
   }
 
   async getnetworkInfo(): Promise<void> {
-    //let networkInfo = await this.userService.getNetworkInfo();
-    //console.log(networkInfo);
+    this.networkData = await this.networkService.getNetworkData();
   }
 }

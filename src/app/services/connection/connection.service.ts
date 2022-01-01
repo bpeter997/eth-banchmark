@@ -22,6 +22,11 @@ export class ConnectionService {
         this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
       }
       window.web3 = new Web3(window.ethereum);
+      this.enableMetaMaskAccount();
     }
+  }
+
+  private async enableMetaMaskAccount(): Promise<void> {
+    await window.ethereum.enable();
   }
 }

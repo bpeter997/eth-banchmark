@@ -9,13 +9,15 @@ import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import { InfoComponent } from './components/info/info.component';
 import { UserdataComponent } from './components/info/userdata/userdata.component';
+import { NetworkdetailsComponent } from './components/info/networkdetails/networkdetails.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     InfoComponent,
-    UserdataComponent
+    UserdataComponent,
+    NetworkdetailsComponent
   ],
   imports: [
     BrowserModule,

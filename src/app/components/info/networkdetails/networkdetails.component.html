@@ -1,0 +1,24 @@
+<mat-card *ngIf="networkData" class="card">
+  <mat-card-title> Network info </mat-card-title>
+  <mat-card-content>
+    <div class="container">
+      <div>
+        <mat-icon class="icon" aria-hidden="false">cloud</mat-icon>
+      </div>
+      <div class="rowContaienr">
+        <div class="row">
+          <div class="col1">Block number:</div>
+          <div class="col2">{{ networkData.blockNumber }}</div>
+          <div class="col3">Last block transaction count:</div>
+          <div class="col4">{{ networkData.lastBlockTransactionCount }}</div>
+        </div>
+        <div class="row">
+        </div>
+        <div class="row">
+          <div class="col1">Peers connected to network:</div>
+          <div class="col2">{{ networkData.peerCount }}</div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

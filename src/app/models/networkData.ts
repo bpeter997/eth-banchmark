@@ -1,6 +1,6 @@
 export interface NetworkData {
   blockNumber: number;
-  blockTransactionCount: number;
+  lastBlockTransactionCount: number;
   peerCount: number;
-  avgGasPrice: number;
+  medianGasPrice: number;
 }
