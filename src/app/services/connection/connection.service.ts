@@ -14,8 +14,9 @@ export class ConnectionService {
   constructor() {
     this.window = window;
     if (window.ethereum === undefined) {
-      alert('Non-Ethereum browser detected. Install MetaMask');
+      localStorage.setItem('authError', 'Non-Ethereum browser detected. Please install MetaMask!');
     } else {
+      localStorage.removeItem('authError');
       if (typeof window.web3 !== 'undefined') {
         this.web3 = window.web3.currentProvider;
       } else {

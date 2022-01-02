@@ -1,30 +1,39 @@
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { Injectable } from '@angular/core';
-import Web3 from 'web3';
 import { UserData } from '../../models/userData';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  public account: any = null;
-  public onAccountChange!: () => Promise<void>;
+  public accountAddress: any = null;
+  private onUserChange = new Subject<string>(); // Source
+  onUserChange$ = this.onUserChange.asObservable(); // Stream
 
-  constructor(private connectionService: ConnectionService) {
+  constructor(
+    private connectionService: ConnectionService,
+    private router: Router
+  ) {
+    if (localStorage.getItem('authError')) return;
     this.connectionService.window.ethereum.on('accountsChanged', () => {
-      this.account = null;
-      if (this.onAccountChange !== null) this.onAccountChange();
+      this.accountAddress = null;
+      this.onUserChange.next();
     });
-   }
+  }
 
   public async getUserData(): Promise<UserData | undefined> {
     try {
       const address: string = await this.getAccountAddress();
-      const balance: number = await this.connectionService.window.web3.eth.getBalance(address);
+      const balance: number =
+        await this.connectionService.window.web3.eth.getBalance(address);
       const userData: UserData = { address, balance };
+      localStorage.removeItem('authError');
       return userData;
     } catch (error) {
-      console.log(error);
+      localStorage.setItem('authError', (error as Error).message);
+      this.router.navigateByUrl('/login');
       return undefined;
     }
   }
@@ -33,14 +42,12 @@ export class UserService {
     try {
       let accounts = await this.connectionService.window.web3.eth.getAccounts();
       if (accounts.length < 1) {
-        //alert('transfer.service :: getAccount :: no accounts found.');
-        throw new Error('No accounts found.');
+        throw new Error('Please log in with metamask!');
       }
-      this.account = accounts[0];
-      return this.account;
+      this.accountAddress = accounts[0];
+      return this.accountAddress;
     } catch (error) {
-      //alert('transfer.service :: getAccount :: error retrieving account');
-      throw new Error('Error retrieving account');
+      throw new Error('Please log in with metamask!');
     }
-}
+  }
 }

@@ -19,7 +19,9 @@ export class InfoComponent implements OnInit {
     private networkService: NetworkService,
     private fibonacciService: FibonacciService
   ) {
-    this.userService.onAccountChange = this.getUserData.bind(this);
+    this.userService.onUserChange$.subscribe(() => {
+      this.getUserData();
+    });
   }
 
   ngOnInit(): void {
