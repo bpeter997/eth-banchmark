@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 })
 export class UserService {
   public accountAddress: any = null;
+
   private onUserChange = new Subject<string>(); // Source
   onUserChange$ = this.onUserChange.asObservable(); // Stream
 
