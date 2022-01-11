@@ -8,7 +8,7 @@ declare let window: any;
   providedIn: 'root',
 })
 export class ConnectionService {
-  readonly web3!: any;
+  readonly web3Provider!: any;
   window: any;
 
   constructor() {
@@ -18,9 +18,9 @@ export class ConnectionService {
     } else {
       localStorage.removeItem('authError');
       if (typeof window.web3 !== 'undefined') {
-        this.web3 = window.web3.currentProvider;
+        this.web3Provider = window.web3.currentProvider;
       } else {
-        this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
+        this.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
       }
       window.web3 = new Web3(window.ethereum);
       this.enableMetaMaskAccount();
