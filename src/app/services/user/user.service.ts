@@ -1,5 +1,5 @@
 import { ConnectionService } from 'src/app/services/connection/connection.service';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { UserData } from '../../models/userData';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -15,7 +15,8 @@ export class UserService {
 
   constructor(
     private connectionService: ConnectionService,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {
     if (localStorage.getItem('authError')) return;
     this.connectionService.window.ethereum.on('accountsChanged', () => {
@@ -33,8 +34,10 @@ export class UserService {
       localStorage.removeItem('authError');
       return userData;
     } catch (error) {
+      console.log(error);
+
       localStorage.setItem('authError', (error as Error).message);
-      this.router.navigateByUrl('/login');
+      this.ngZone.run(() => this.router.navigateByUrl('/login'));
       return undefined;
     }
   }

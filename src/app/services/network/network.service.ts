@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { NetworkData } from 'src/app/models/networkData';
 import { Router } from '@angular/router';
 
@@ -8,18 +8,23 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class NetworkService {
-
-  constructor(private conectionService: ConnectionService, private router: Router) {
+  constructor(
+    private conectionService: ConnectionService,
+    private router: Router,
+    private ngZone: NgZone
+  ) {
     this.conectionService.window.ethereum.on('chainChanged', () => {
-      this.router.navigateByUrl('/login');
-    })
+      this.ngZone.run(() => this.router.navigateByUrl('/login'));
+    });
   }
 
   public async getNetworkData(): Promise<NetworkData> {
     let blockNumber: number =
       await this.conectionService.window.web3.eth.getBlockNumber();
     let lastBlockTransactionCount: number =
-      await this.conectionService.window.web3.eth.getBlockTransactionCount(blockNumber);
+      await this.conectionService.window.web3.eth.getBlockTransactionCount(
+        blockNumber
+      );
     let peerCount: number =
       await this.conectionService.window.web3.eth.net.getPeerCount();
     let medianGasPrice: number =
@@ -29,7 +34,7 @@ export class NetworkService {
       blockNumber,
       lastBlockTransactionCount,
       peerCount,
-      medianGasPrice
+      medianGasPrice,
     };
 
     return currentNetworkData;

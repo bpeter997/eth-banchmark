@@ -1,5 +1,5 @@
 import { UserService } from './../../services/user/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,8 +10,12 @@ import { Router } from '@angular/router';
 export class AuthComponent implements OnInit {
   message: string = '';
 
-  constructor(private router: Router, private userService: UserService) {
-    this.userService.onUserChange$.subscribe( async () => {
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private ngZone: NgZone
+  ) {
+    this.userService.onUserChange$.subscribe(async () => {
       await this.userService.getUserData();
       this.handleAuthentication();
     });
@@ -26,7 +30,7 @@ export class AuthComponent implements OnInit {
     if (currentMessage) {
       this.message = currentMessage;
     } else {
-      this.router.navigateByUrl('/overview');
+      this.ngZone.run(() => this.router.navigateByUrl('/overview'));
     }
   }
 }

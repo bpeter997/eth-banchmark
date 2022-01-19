@@ -14,13 +14,18 @@ export class ConnectionService {
   constructor() {
     this.window = window;
     if (window.ethereum === undefined) {
-      localStorage.setItem('authError', 'Non-Ethereum browser detected. Please install MetaMask!');
+      localStorage.setItem(
+        'authError',
+        'Non-Ethereum browser detected. Please install MetaMask!'
+      );
     } else {
       localStorage.removeItem('authError');
       if (typeof window.web3 !== 'undefined') {
         this.web3Provider = window.web3.currentProvider;
       } else {
-        this.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
+        this.web3Provider = new Web3.providers.HttpProvider(
+          'http://localhost:8545'
+        );
       }
       window.web3 = new Web3(window.ethereum);
       this.enableMetaMaskAccount();

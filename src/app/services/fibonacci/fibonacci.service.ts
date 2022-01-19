@@ -17,6 +17,7 @@ export class FibonacciService {
     // const contract = require('@truffle/contract');
     // this.fiboContract = contract(fiboAbi);
     // this.fiboContract.setProvider(this.connectionService.web3Provider);
+
     this.byteCode = fiboAbi.bytecode;
 
     let modifiedFiboAbiString: string = '[' + JSON.stringify(fiboAbi) + ']';

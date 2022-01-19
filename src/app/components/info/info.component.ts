@@ -31,7 +31,6 @@ export class InfoComponent implements OnInit {
 
   async getUserData(): Promise<void> {
     this.userData = await this.userService.getUserData();
-    this.fibonacciService.callFib(5);
   }
 
   async getnetworkInfo(): Promise<void> {

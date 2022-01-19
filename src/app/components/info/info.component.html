@@ -1,4 +1,9 @@
 <div id="InfoComponentContainer">
-  <app-userdata *ngIf="userData" class="cardContainer" [userData]="userData"> </app-userdata>
-  <app-networkdetails *ngIf="userData" class="cardContainer" [networkData]="networkData"></app-networkdetails>
+  <app-userdata *ngIf="userData" class="cardContainer" [userData]="userData">
+  </app-userdata>
+  <app-networkdetails
+    *ngIf="userData"
+    class="cardContainer"
+    [networkData]="networkData"
+  ></app-networkdetails>
 </div>
