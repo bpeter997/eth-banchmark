@@ -33,6 +33,15 @@ export class InfoComponent implements OnInit {
     this.userData = await this.userService.getUserData();
   }
 
+  async callFibonacci(): Promise<void> {
+    const fibres = await this.fibonacciService.callFib(5, this.userData!.address);
+    console.log(fibres);
+  }
+
+ async generateFibonacci(): Promise<void> {
+   await this.fibonacciService.generateFib(100, this.userData!.address)
+ }
+
   async getnetworkInfo(): Promise<void> {
     this.networkData = await this.networkService.getNetworkData();
   }

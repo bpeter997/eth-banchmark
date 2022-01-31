@@ -11,6 +11,7 @@ import { InfoComponent } from './components/info/info.component';
 import { UserdataComponent } from './components/info/userdata/userdata.component';
 import { NetworkdetailsComponent } from './components/info/networkdetails/networkdetails.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AuthComponent } from './components/auth/auth.component';
     MatToolbarModule,
     MatCardModule,
     MatIconModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],
