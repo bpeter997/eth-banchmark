@@ -7,8 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'eth-banchmark';
-
-  constructor(){
-    console.log('app component constructor');
-  }
 }

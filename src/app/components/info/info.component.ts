@@ -19,30 +19,51 @@ export class InfoComponent implements OnInit {
     private networkService: NetworkService,
     private fibonacciService: FibonacciService
   ) {
-    this.userService.onUserChange$.subscribe(() => {
+
+    this.userService.onUserChange$.subscribe(async () => {
+      await this.getUserData();
+      this.getnetworkInfo();
+    });
+
+    this.fibonacciService.onTransactionGeneration$.subscribe(() => {
       this.getUserData();
+      this.getnetworkInfo();
     });
   }
 
   ngOnInit(): void {
-    this.getUserData();
-    this.getnetworkInfo();
+    this.getAllInformation();
+  }
+
+  async getAllInformation(): Promise<void> {
+    await this.getUserData();
+    await this.getnetworkInfo();
+    await this.setContract();
   }
 
   async getUserData(): Promise<void> {
     this.userData = await this.userService.getUserData();
-  }
+    console.log(this.userData);
 
-  async callFibonacci(): Promise<void> {
-    const fibres = await this.fibonacciService.callFib(5, this.userData!.address);
-    console.log(fibres);
   }
-
- async generateFibonacci(): Promise<void> {
-   await this.fibonacciService.generateFib(100, this.userData!.address)
- }
 
   async getnetworkInfo(): Promise<void> {
     this.networkData = await this.networkService.getNetworkData();
+  }
+
+  async setContract(): Promise<void> {
+    await this.fibonacciService.setFibonacciContract(this.userData!.address);
+  }
+
+  async callFibonacci(): Promise<void> {
+    const fibres = await this.fibonacciService.callFib(
+      5,
+      this.userData!.address
+    );
+    console.log(fibres);
+  }
+
+  async generateFibonacci(): Promise<void> {
+    await this.fibonacciService.generateFib(100, this.userData!.address);
   }
 }
