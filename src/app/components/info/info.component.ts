@@ -64,7 +64,7 @@ export class InfoComponent implements OnInit, OnDestroy {
   }
 
   async setContract(): Promise<void> {
-    await this.fibonacciService.setFibonacciContract(this.userData!.address);
+    await this.fibonacciService.setFibonacciContract(this.userData!.address, this.networkData!.id);
   }
 
   async callFibonacci(): Promise<void> {

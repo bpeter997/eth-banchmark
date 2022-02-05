@@ -36,7 +36,8 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "angular-slickgrid", "stream"
+              "angular-slickgrid",
+              "stream"
             ]
           },
           "configurations": {
@@ -107,6 +108,16 @@
               "src/styles.sass"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "eth-banchmark:build:production",
+            "firebaseProject": "eth-banchmark",
+            "firebaseHostingSite": "eth-banchmark"
           }
         }
       }

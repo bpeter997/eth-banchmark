@@ -1,3 +1,4 @@
+import { firebaseConfig } from './../environments/firebase.config';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -12,6 +13,9 @@ import { UserdataComponent } from './components/info/userdata/userdata.component
 import { NetworkdetailsComponent } from './components/info/networkdetails/networkdetails.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { HttpClientModule } from '@angular/common/http';
+
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatToolbarModule,
     MatCardModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideFirestore(() => getFirestore())
   ],
   providers: [],
   bootstrap: [AppComponent],

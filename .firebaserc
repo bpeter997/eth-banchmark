@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "eth-banchmark": {
+      "hosting": {
+        "eth-banchmark": [
+          "eth-banchmark"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "eth-banchmark"
+  }
+}

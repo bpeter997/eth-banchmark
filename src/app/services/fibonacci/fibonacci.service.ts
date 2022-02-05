@@ -1,8 +1,8 @@
-import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { ConnectionService } from '../connection/connection.service';
-import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { doc, setDoc } from "firebase/firestore";
+import { Firestore, getDoc } from '@angular/fire/firestore';
 
 // compiled by remixd
 //let fiboAbi = [
@@ -84,16 +84,20 @@ export class FibonacciService {
   private onTransactionGeneration = new Subject<string>(); // Source
   onTransactionGeneration$ = this.onTransactionGeneration.asObservable(); // Stream
 
-  constructor(private connectionService: ConnectionService) {
+  constructor(private connectionService: ConnectionService, private firestore: Firestore) {
     // const contract = require('@truffle/contract');
     // this.fiboContract = contract(fiboAbi);
     // this.fiboContract.setProvider(this.connectionService.web3Provider);
     this.fiboContractAddress = '';
   }
 
-  public setFibonacciContract(userAddress: string) {
-    if (this.fiboContractAddress == '') {
-      this.deployFibonacciContract(userAddress);
+  public async setFibonacciContract(userAddress: string, networkId: number) {
+    const docRef = doc(this.firestore, "networks", networkId.toString());
+    const docSnap = await getDoc(docRef);
+    this.fiboContractAddress = docSnap.data()?.fibonacciBytecode;
+
+    if (!this.fiboContractAddress) {
+      this.deployFibonacciContract(userAddress, networkId);
     } else {
       this.fiboContract = new this.connectionService.window.web3.eth.Contract(
         fiboAbi,
@@ -102,7 +106,7 @@ export class FibonacciService {
     }
   }
 
-  private deployFibonacciContract(userAddress: string) {
+  private deployFibonacciContract(userAddress: string, networkId: number) {
     try {
       this.fiboContract = new this.connectionService.window.web3.eth.Contract(
         fiboAbi
@@ -122,11 +126,14 @@ export class FibonacciService {
             'ether'
           ),
         })
-        .then((fiboContractInstance: any) => {
+        .then(async (fiboContractInstance: any) => {
           this.fiboContract.options.address =
             fiboContractInstance.options.address;
           this.fiboContractAddress = fiboContractInstance.options.address;
           this.onTransactionGeneration.next();
+          await setDoc(doc(this.firestore, "networks", networkId.toString()), {
+             fibonacciBytecode: this.fiboContractAddress
+           });
         });
     } catch (error) {
       console.log(error);
@@ -165,3 +172,4 @@ export class FibonacciService {
     return this.fiboContract.methods.callFib(value).call({ from: from });
   }
 }
+

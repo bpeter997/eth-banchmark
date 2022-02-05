@@ -19,6 +19,8 @@ export class NetworkService {
   }
 
   public async getNetworkData(): Promise<NetworkData> {
+    let id = await this.conectionService.window.web3.eth.net.getId();
+    let networkType = await this.conectionService.window.web3.eth.net.getNetworkType();
     let blockNumber: number =
       await this.conectionService.window.web3.eth.getBlockNumber();
     let lastBlockTransactionCount: number =
@@ -31,6 +33,8 @@ export class NetworkService {
       await this.conectionService.window.web3.eth.getGasPrice();
 
     let currentNetworkData: NetworkData = {
+      id,
+      networkType,
       blockNumber,
       lastBlockTransactionCount,
       peerCount,
