@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { UserData } from 'src/app/models/userData';
 
 @Component({
@@ -6,13 +6,18 @@ import { UserData } from 'src/app/models/userData';
   templateUrl: './userdata.component.html',
   styleUrls: ['./userdata.component.sass']
 })
-export class UserdataComponent implements OnInit {
+export class UserdataComponent implements OnInit, OnChanges {
 
   @Input() userData?: UserData;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+      console.log(changes);
+
   }
 
 }

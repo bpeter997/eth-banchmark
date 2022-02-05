@@ -1,4 +1,3 @@
-import { NetworkData } from './../../models/networkData';
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 
@@ -21,7 +20,8 @@ export class ConnectionService {
     } else {
       localStorage.removeItem('authError');
       if (typeof window.web3 !== 'undefined') {
-        this.web3Provider = window.web3.currentProvider;
+        //this.web3Provider = window.web3.currentProvider;
+        this.web3Provider = window.ethereum;
       } else {
         this.web3Provider = new Web3.providers.HttpProvider(
           'http://localhost:8545'
@@ -33,6 +33,7 @@ export class ConnectionService {
   }
 
   private async enableMetaMaskAccount(): Promise<void> {
-    await window.ethereum.enable();
+    //await window.ethereum.enable();
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
   }
 }
