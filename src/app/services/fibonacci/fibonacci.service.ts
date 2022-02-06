@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConnectionService } from '../connection/connection.service';
 import { Subject } from 'rxjs';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from 'firebase/firestore';
 import { Firestore, getDoc } from '@angular/fire/firestore';
 
 // compiled by remixd
@@ -84,15 +84,22 @@ export class FibonacciService {
   private onTransactionGeneration = new Subject<string>(); // Source
   onTransactionGeneration$ = this.onTransactionGeneration.asObservable(); // Stream
 
-  constructor(private connectionService: ConnectionService, private firestore: Firestore) {
+  public isContractAvailable: boolean;
+
+  constructor(
+    private connectionService: ConnectionService,
+    private firestore: Firestore
+  ) {
     // const contract = require('@truffle/contract');
     // this.fiboContract = contract(fiboAbi);
     // this.fiboContract.setProvider(this.connectionService.web3Provider);
     this.fiboContractAddress = '';
+    this.isContractAvailable = false;
   }
 
   public async setFibonacciContract(userAddress: string, networkId: number) {
-    const docRef = doc(this.firestore, "networks", networkId.toString());
+    this.isContractAvailable = false;
+    const docRef = doc(this.firestore, 'networks', networkId.toString());
     const docSnap = await getDoc(docRef);
     this.fiboContractAddress = docSnap.data()?.fibonacciBytecode;
 
@@ -103,6 +110,7 @@ export class FibonacciService {
         fiboAbi,
         this.fiboContractAddress
       );
+      this.isContractAvailable = true;
     }
   }
 
@@ -131,9 +139,10 @@ export class FibonacciService {
             fiboContractInstance.options.address;
           this.fiboContractAddress = fiboContractInstance.options.address;
           this.onTransactionGeneration.next();
-          await setDoc(doc(this.firestore, "networks", networkId.toString()), {
-             fibonacciBytecode: this.fiboContractAddress
-           });
+          await setDoc(doc(this.firestore, 'networks', networkId.toString()), {
+            fibonacciBytecode: this.fiboContractAddress,
+          });
+          this.isContractAvailable = true;
         });
     } catch (error) {
       console.log(error);
@@ -172,4 +181,3 @@ export class FibonacciService {
     return this.fiboContract.methods.callFib(value).call({ from: from });
   }
 }
-

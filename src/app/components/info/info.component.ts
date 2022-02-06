@@ -67,15 +67,19 @@ export class InfoComponent implements OnInit, OnDestroy {
     await this.fibonacciService.setFibonacciContract(this.userData!.address, this.networkData!.id);
   }
 
-  async callFibonacci(): Promise<void> {
+  async callFibonacci(value: number): Promise<void> {
     const fibres = await this.fibonacciService.callFib(
-      5,
+      value,
       this.userData!.address
     );
     console.log(fibres);
   }
 
-  async generateFibonacci(): Promise<void> {
-    await this.fibonacciService.generateFib(100, this.userData!.address);
+  async generateFibonacci(value: number): Promise<void> {
+    await this.fibonacciService.generateFib(value, this.userData!.address);
+  }
+
+  isFiboContractAvailabel(): boolean {
+    return this.fibonacciService.isContractAvailable;
   }
 }

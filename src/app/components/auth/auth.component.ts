@@ -21,7 +21,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.add(
       this.userService.onUserChange$.subscribe(async () => {
-        console.log('authmponent sbu');
         await this.userService.getUserData();
         this.handleAuthentication();
       })

@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { FibogeneratorComponent } from './components/info/fibogenerator/fibogenerator.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     UserdataComponent,
     NetworkdetailsComponent,
     AuthComponent,
+    FibogeneratorComponent,
   ],
   imports: [
     BrowserModule,
