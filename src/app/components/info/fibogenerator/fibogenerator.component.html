@@ -1,2 +1,32 @@
-<button [disabled]="!isFiboContractAvailabel" mat-button (click)="callFibonacci(5)">CallFibonacci</button>
-<button [disabled]="!isFiboContractAvailabel" mat-button (click)="generateFibonacci(5)">GenerateFibonacci</button>
+<form>
+  <div>
+    <mat-form-field>
+      <mat-label>Call number</mat-label>
+      <input matInput [formControl]="callValue" type="number" value="callValue.value"/>
+    </mat-form-field>
+    <button
+      mat-button
+      type="button"
+      color="primary"
+      [disabled]="!isFiboContractAvailable || !callValue.valid"
+      (click)="callFibonacci()"
+    >
+      CallFibonacci
+    </button>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Call number</mat-label>
+      <input matInput [formControl]="generateValue" type="number" value="callValue.value"/>
+    </mat-form-field>
+    <button
+      mat-button
+      type="button"
+      color="primary"
+      [disabled]="!isFiboContractAvailable || !generateValue.valid"
+      (click)="generateFibonacci()"
+    >
+      GenerateFibonacci
+    </button>
+  </div>
+</form>

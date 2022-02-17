@@ -64,7 +64,10 @@ export class InfoComponent implements OnInit, OnDestroy {
   }
 
   async setContract(): Promise<void> {
-    await this.fibonacciService.setFibonacciContract(this.userData!.address, this.networkData!.id);
+    await this.fibonacciService.setFibonacciContract(
+      this.userData!.address,
+      this.networkData!.id
+    );
   }
 
   async callFibonacci(value: number): Promise<void> {
@@ -76,10 +79,19 @@ export class InfoComponent implements OnInit, OnDestroy {
   }
 
   async generateFibonacci(value: number): Promise<void> {
-    await this.fibonacciService.generateFib(value, this.userData!.address);
+    const fibTransactionRes = await this.fibonacciService.generateFib(
+      value,
+      this.userData!.address
+    );
+    console.log(fibTransactionRes);
+    if(!fibTransactionRes) return
+    const transaction = await this.fibonacciService.getTransactionByHash(
+      fibTransactionRes.transactionHash
+    );
+    console.log(transaction);
   }
 
-  isFiboContractAvailabel(): boolean {
+  isFiboContractAvailable(): boolean {
     return this.fibonacciService.isContractAvailable;
   }
 }

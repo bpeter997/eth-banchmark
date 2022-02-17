@@ -163,7 +163,10 @@ export class FibonacciService {
     return this.fiboContract.methods
       .generateFib(value)
       .send({ from: from })
-      .then((result: any) => this.onTransactionGeneration.next())
+      .then((result: any) => {
+        this.onTransactionGeneration.next();
+        return result;
+      })
       .catch((error: Error) => console.log(error));
   }
 
@@ -179,5 +182,9 @@ export class FibonacciService {
       ,'0xe95e1800Cf6F359AEa4476F891E29026DC7Ea843'
     ); */
     return this.fiboContract.methods.callFib(value).call({ from: from });
+  }
+
+  getTransactionByHash(hash: string) {
+    return this.connectionService.window.web3.eth.getTransaction(hash)
   }
 }
