@@ -2,11 +2,12 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Fibonacci {
-    uint256[] fibseries;
+    uint256[] public fibseries;
 
     // n = how many in the series to return
     function generateFib(uint256 n) public {
         // set 1st and 2nd entries
+        delete fibseries;
         fibseries.push(1);
         fibseries.push(1);
 
@@ -15,6 +16,8 @@ contract Fibonacci {
             fibseries.push(fibseries[i - 1] + fibseries[i - 2]);
         }
     }
+
+
 
     function callFib(uint256 n) external pure returns (uint256) {
         if (n == 0) {
