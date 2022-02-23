@@ -1,3 +1,4 @@
+import { TransactionData } from './../../models/transactionData';
 import { NetworkService } from './../../services/network/network.service';
 import { UserService } from './../../services/user/user.service';
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
@@ -14,6 +15,8 @@ import { Subscription } from 'rxjs';
 export class InfoComponent implements OnInit, OnDestroy {
   userData?: UserData;
   networkData?: NetworkData;
+  transactionData: TransactionData | null = null;
+  callData: number | null = null;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -75,7 +78,8 @@ export class InfoComponent implements OnInit, OnDestroy {
       value,
       this.userData!.address
     );
-    console.log(fibres);
+    this.resetDatas();
+    this.callData=fibres;
   }
 
   async generateFibonacci(value: number): Promise<void> {
@@ -83,12 +87,33 @@ export class InfoComponent implements OnInit, OnDestroy {
       value,
       this.userData!.address
     );
-    console.log(fibTransactionRes);
-    if(!fibTransactionRes) return
+    if (!fibTransactionRes) return;
+    this.resetDatas()
     const transaction = await this.fibonacciService.getTransactionByHash(
       fibTransactionRes.transactionHash
     );
-    console.log(transaction);
+    /* const parameters = await this.fibonacciService.decodeParameters(
+      transaction.input,
+      'uint256'
+    ); */
+    const fibSeries = await this.fibonacciService.getFibSeriesFromContract(
+      value,
+      this.userData!.address
+    );
+
+    this.transactionData = {
+      result: fibSeries,
+      blockHash: fibTransactionRes.blockHash,
+      blockNumber: fibTransactionRes.blockNumber,
+      gasPrice: fibTransactionRes.gasUsed,
+      nonce: transaction.nonce,
+      transactionHash: fibTransactionRes.transactionHash
+    }
+  }
+
+  resetDatas(): void {
+    this.callData = null;
+    this.transactionData = null;
   }
 
   isFiboContractAvailable(): boolean {

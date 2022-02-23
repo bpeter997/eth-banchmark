@@ -8,7 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 import { InfoComponent } from './components/info/info.component';
 import { UserdataComponent } from './components/info/userdata/userdata.component';
 import { NetworkdetailsComponent } from './components/info/networkdetails/networkdetails.component';
@@ -19,6 +21,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FibogeneratorComponent } from './components/info/fibogenerator/fibogenerator.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ResultpanelComponent } from './components/info/resultpanel/resultpanel.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NetworkdetailsComponent,
     AuthComponent,
     FibogeneratorComponent,
+    ResultpanelComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,10 +41,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     MatIconModule,
     MatInputModule,
+    MatButtonModule,
+    MatTableModule,
     HttpClientModule,
     ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
   ],
   providers: [],
   bootstrap: [AppComponent],
