@@ -1,15 +1,20 @@
 <div id="InfoComponentContainer">
-  <app-userdata *ngIf="userData" class="cardContainer" [userData]="userData">
-  </app-userdata>
-  <app-networkdetails
-    *ngIf="userData"
-    class="cardContainer"
-    [networkData]="networkData"
-  ></app-networkdetails>
+  <mat-card id="MainContainerCard">
+    <app-userdata *ngIf="userData" class="cardContainer" [userData]="userData">
+    </app-userdata>
+    <app-networkdetails
+      *ngIf="userData"
+      class="cardContainer"
+      [networkData]="networkData"
+    ></app-networkdetails>
+  </mat-card>
 </div>
 <app-fibogenerator
   [isFiboContractAvailable]="isFiboContractAvailable()"
   (callFibonacciEventEmitter)="this.callFibonacci($event)"
   (generateFibonacciEventEmitter)="this.generateFibonacci($event)"
 ></app-fibogenerator>
-<app-resultpanel [callData]="callData" [transactionData]="transactionData"></app-resultpanel>
+<app-resultpanel
+  [callData]="callData"
+  [transactionData]="transactionData"
+></app-resultpanel>

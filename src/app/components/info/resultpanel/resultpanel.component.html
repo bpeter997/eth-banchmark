@@ -1,7 +1,40 @@
 <div id="ResultPanel">
-  <div *ngIf="callData">
-    {{callData}}
-  </div>
-  <div *ngIf="transactionData">
-  </div>
+  <mat-card *ngIf="callData" class="mat-elevation-z0" id="CallCard">
+    <mat-card-title>Call result</mat-card-title>
+    <mat-card-content class="cardContent">
+      <div class="row">
+        <div class="col1">Result:</div>
+        <div class="col2">{{ callData }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="transactionData" class="mat-elevation-z0" id="TransactionCard">
+    <mat-card-title>Transaction result</mat-card-title>
+    <mat-card-content class="cardContent">
+      <div class="row">
+        <div class="col1">Result:</div>
+        <div class="col2">{{ transactionData.result }}</div>
+      </div>
+      <div class="row">
+        <div class="col1">Block number:</div>
+        <div class="col2">{{ transactionData.blockNumber }}</div>
+      </div>
+      <div class="row">
+        <div class="col1">Gas price:</div>
+        <div class="col2">{{ transactionData.gasPrice }}</div>
+      </div>
+      <div class="row">
+        <div class="col1">Nonce:</div>
+        <div class="col2">{{ transactionData.nonce }}</div>
+      </div>
+      <div class="row">
+        <div class="col1">Block hash:</div>
+        <div class="col2">{{ transactionData.blockHash }}</div>
+      </div>
+      <div class="row">
+        <div class="col1">Transaction hash:</div>
+        <div class="col2">{{ transactionData.transactionHash }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

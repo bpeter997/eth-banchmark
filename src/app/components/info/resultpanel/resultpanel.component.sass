@@ -1,8 +1,43 @@
 #ResultPanel
   position: absolute
-  left: 30%
-  width: 70%
+  left: 20%
+  width: 100%
   height: 20%
   display: flex
   align-items: center
-  justify-content: center
+  justify-content: flex-start
+
+  .row
+    display: flex
+    justify-content: space-between
+
+  #CallCard
+    position: absolute
+    left: 0
+    top: 5px
+    width: 10%
+    height: 70%
+
+    .col1
+      width: 40%
+      padding: 0 2%
+      font-weight: bold
+
+    .col2
+      width: 60%
+      text-align: left
+
+  #TransactionCard
+    position: absolute
+    top: 5px
+    left: 0
+    width: 100%
+    height: 70%
+    .col1
+      width: 10%
+      padding: 0 2%
+      font-weight: bold
+
+    .col2
+      width: 90%
+      text-align: left

@@ -16,6 +16,7 @@
         class="submitBtn"
         [disabled]="!isFiboContractAvailable || !callValue.valid"
         (click)="callFibonacci()"
+        type="button"
       >
         Call Fibonacci
       </button>
@@ -36,6 +37,7 @@
         class="submitBtn"
         [disabled]="!isFiboContractAvailable || !generateValue.valid"
         (click)="generateFibonacci()"
+        type="button"
       >
         Generate Fibonacci
       </button>
