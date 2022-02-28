@@ -170,6 +170,12 @@ export class FibonacciService {
     return this.fiboContract.methods
       .generateFib(value)
       .send({ from: from })
+      /* .on(
+        'confirmation',
+        function (confNumber: any, receipt: any, latestBlockHash: any) {
+          console.log(confNumber, receipt, latestBlockHash, 'confirmation');
+        }
+      ) */
       .then((result: any) => {
         this.onTransactionGeneration.next();
         return result;
@@ -188,8 +194,6 @@ export class FibonacciService {
       fiboAbi
       ,'0xe95e1800Cf6F359AEa4476F891E29026DC7Ea843'
     ); */
-    console.log(this.fiboContract);
-
     return this.fiboContract.methods.callFib(value).call({ from: from });
   }
 
@@ -204,7 +208,11 @@ export class FibonacciService {
   decodeInputValue(value: string) {
     return this.connectionService.window.web3.toAscii(value);
   }
-/*
+
+  getBlockByBlockHash(blockHash: string) {
+    return this.connectionService.window.web3.eth.getBlock(blockHash);
+  }
+  /*
   decodeParameters(value: string, type: string) {
     value = '0x' + value.slice(10);
     return this.connectionService.window.web3.eth.abi.decodeParameters(

@@ -1,3 +1,4 @@
+import { CallData } from './../../models/callData';
 import { TransactionData } from './../../models/transactionData';
 import { NetworkService } from './../../services/network/network.service';
 import { UserService } from './../../services/user/user.service';
@@ -16,7 +17,7 @@ export class InfoComponent implements OnInit, OnDestroy {
   userData?: UserData;
   networkData?: NetworkData;
   transactionData: TransactionData | null = null;
-  callData: number | null = null;
+  callData: CallData | null = null;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -64,6 +65,7 @@ export class InfoComponent implements OnInit, OnDestroy {
 
   async getnetworkInfo(): Promise<void> {
     this.networkData = await this.networkService.getNetworkData();
+    console.log(this.networkData);
   }
 
   async setContract(): Promise<void> {
@@ -74,21 +76,28 @@ export class InfoComponent implements OnInit, OnDestroy {
   }
 
   async callFibonacci(value: number): Promise<void> {
+    const startTime: number = new Date().getTime();
     const fibres = await this.fibonacciService.callFib(
       value,
       this.userData!.address
     );
+    const endTime: number = new Date().getTime();
+    const calculationDuration: number = (endTime - startTime) / 1000;
     this.resetDatas();
-    this.callData=fibres;
+    this.callData = {
+      value: fibres,
+      calculationDuration: calculationDuration,
+    };
   }
 
   async generateFibonacci(value: number): Promise<void> {
+    const generationTime: number = +new Date();
     const fibTransactionRes = await this.fibonacciService.generateFib(
       value,
       this.userData!.address
     );
     if (!fibTransactionRes) return;
-    this.resetDatas()
+    this.resetDatas();
     const transaction = await this.fibonacciService.getTransactionByHash(
       fibTransactionRes.transactionHash
     );
@@ -101,14 +110,24 @@ export class InfoComponent implements OnInit, OnDestroy {
       this.userData!.address
     );
 
+    const transactionContainerBlock =
+      await this.fibonacciService.getBlockByBlockHash(
+        fibTransactionRes.blockHash
+      );
+
+    const blockMiningTime: number =
+      transactionContainerBlock.timestamp * 1000 - generationTime;
+
     this.transactionData = {
       result: fibSeries,
       blockHash: fibTransactionRes.blockHash,
       blockNumber: fibTransactionRes.blockNumber,
-      gasPrice: fibTransactionRes.gasUsed,
+      gasPrice: transaction.gas,
       nonce: transaction.nonce,
-      transactionHash: fibTransactionRes.transactionHash
-    }
+      transactionHash: fibTransactionRes.transactionHash,
+      blockMiningTime: blockMiningTime / 1000,
+      fiboValue: value,
+    };
   }
 
   resetDatas(): void {

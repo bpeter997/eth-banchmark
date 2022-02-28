@@ -1,3 +1,4 @@
+import { CallData } from './../../../models/callData';
 import { TransactionData } from './../../../models/transactionData';
 import { Component, Input, OnInit } from '@angular/core';
 
@@ -7,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./resultpanel.component.sass']
 })
 export class ResultpanelComponent implements OnInit {
-  @Input() callData: number | null = null;
+  @Input() callData: CallData | null = null;
   @Input() transactionData: TransactionData | null = null;
 
   constructor() { }

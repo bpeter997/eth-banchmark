@@ -1,4 +1,3 @@
-import { Subject } from 'rxjs';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { Injectable, NgZone } from '@angular/core';
 import { NetworkData } from 'src/app/models/networkData';
@@ -9,36 +8,41 @@ import { Router } from '@angular/router';
 })
 export class NetworkService {
   constructor(
-    private conectionService: ConnectionService,
+    private connectionService: ConnectionService,
     private router: Router,
     private ngZone: NgZone
   ) {
-    this.conectionService.window.ethereum.on('chainChanged', () => {
+    this.connectionService.window.ethereum.on('chainChanged', () => {
       this.ngZone.run(() => this.router.navigateByUrl('/login'));
     });
   }
 
   public async getNetworkData(): Promise<NetworkData> {
-    let id = await this.conectionService.window.web3.eth.net.getId();
-    let networkType = await this.conectionService.window.web3.eth.net.getNetworkType();
-    let blockNumber: number =
-      await this.conectionService.window.web3.eth.getBlockNumber();
-    let lastBlockTransactionCount: number =
-      await this.conectionService.window.web3.eth.getBlockTransactionCount(
+    const id = await this.connectionService.window.web3.eth.net.getId();
+    const networkType =
+      await this.connectionService.window.web3.eth.net.getNetworkType();
+    const blockNumber: number =
+      await this.connectionService.window.web3.eth.getBlockNumber();
+    const lastBlockTransactionCount: number =
+      await this.connectionService.window.web3.eth.getBlockTransactionCount(
         blockNumber
       );
-    let peerCount: number =
-      await this.conectionService.window.web3.eth.net.getPeerCount();
-    let medianGasPrice: number =
-      await this.conectionService.window.web3.eth.getGasPrice();
+    const peerCount: number =
+      await this.connectionService.window.web3.eth.net.getPeerCount();
+    const medianGasPrice: number =
+      await this.connectionService.window.web3.eth.getGasPrice();
+    console.log(this.connectionService.window.web3.eth);
+    const chainName: string =
+      this.connectionService.window.web3.eth.defaultCommon;
 
-    let currentNetworkData: NetworkData = {
+    const currentNetworkData: NetworkData = {
       id,
       networkType,
       blockNumber,
       lastBlockTransactionCount,
       peerCount,
       medianGasPrice,
+      chainName,
     };
 
     return currentNetworkData;

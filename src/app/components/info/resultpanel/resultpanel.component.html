@@ -4,7 +4,11 @@
     <mat-card-content class="cardContent">
       <div class="row">
         <div class="col1">Result:</div>
-        <div class="col2">{{ callData }}</div>
+        <div class="col2">{{ callData.value }}</div>
+      </div>
+      <div class="row">
+        <div class="col1">Calculation duration:</div>
+        <div class="col2">{{ callData.calculationDuration }} sec</div>
       </div>
     </mat-card-content>
   </mat-card>
@@ -21,7 +25,7 @@
       </div>
       <div class="row">
         <div class="col1">Gas price:</div>
-        <div class="col2">{{ transactionData.gasPrice }}</div>
+        <div class="col2">{{ transactionData.gasPrice }} wei</div>
       </div>
       <div class="row">
         <div class="col1">Nonce:</div>
@@ -34,6 +38,10 @@
       <div class="row">
         <div class="col1">Transaction hash:</div>
         <div class="col2">{{ transactionData.transactionHash }}</div>
+      </div>
+      <div class="row">
+        <div class="col1">Block mining time:</div>
+        <div class="col2">{{ transactionData.blockMiningTime }} sec</div>
       </div>
     </mat-card-content>
   </mat-card>

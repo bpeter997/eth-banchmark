@@ -4,5 +4,7 @@ export interface TransactionData {
   gasPrice: number,
   nonce: number,
   blockHash: string,
-  transactionHash: number
+  transactionHash: number,
+  blockMiningTime: number,
+  fiboValue: number
 }
