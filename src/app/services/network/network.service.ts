@@ -31,9 +31,6 @@ export class NetworkService {
       await this.connectionService.window.web3.eth.net.getPeerCount();
     const medianGasPrice: number =
       await this.connectionService.window.web3.eth.getGasPrice();
-    console.log(this.connectionService.window.web3.eth);
-    const chainName: string =
-      this.connectionService.window.web3.eth.defaultCommon;
 
     const currentNetworkData: NetworkData = {
       id,
@@ -42,7 +39,6 @@ export class NetworkService {
       lastBlockTransactionCount,
       peerCount,
       medianGasPrice,
-      chainName,
     };
 
     return currentNetworkData;

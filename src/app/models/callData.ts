@@ -1,4 +1,6 @@
 export interface CallData {
   value: number;
-  calculationDuration: number
+  calculationDuration: number,
+  fiboValue: number,
+  networkId: number
 }

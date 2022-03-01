@@ -5,6 +5,7 @@ export interface TransactionData {
   nonce: number,
   blockHash: string,
   transactionHash: number,
-  blockMiningTime: number,
-  fiboValue: number
+  blockMiningDuration: number,
+  fiboValue: number,
+  networkId: number
 }

@@ -1,8 +1,10 @@
+import { CallData } from './../../models/callData';
+import { TransactionData } from './../../models/transactionData';
 import { Injectable } from '@angular/core';
 import { ConnectionService } from '../connection/connection.service';
 import { Subject } from 'rxjs';
-import { doc, setDoc } from 'firebase/firestore';
-import { Firestore, getDoc } from '@angular/fire/firestore';
+import { collection, doc, query, setDoc, where } from 'firebase/firestore';
+import { addDoc, Firestore, getDoc, getDocs } from '@angular/fire/firestore';
 
 // compiled by remixd
 //let fiboAbi = [
@@ -92,6 +94,8 @@ export class FibonacciService {
   onTransactionGeneration$ = this.onTransactionGeneration.asObservable(); // Stream
 
   public isContractAvailable: boolean;
+  public static TRANSACTIONS: string = 'transactions';
+  public static CALLS: string = 'calls';
 
   constructor(
     private connectionService: ConnectionService,
@@ -167,20 +171,22 @@ export class FibonacciService {
       fiboAbi
       ,'0xe95e1800Cf6F359AEa4476F891E29026DC7Ea843'
     ); */
-    return this.fiboContract.methods
-      .generateFib(value)
-      .send({ from: from })
-      /* .on(
+    return (
+      this.fiboContract.methods
+        .generateFib(value)
+        .send({ from: from })
+        /* .on(
         'confirmation',
         function (confNumber: any, receipt: any, latestBlockHash: any) {
           console.log(confNumber, receipt, latestBlockHash, 'confirmation');
         }
       ) */
-      .then((result: any) => {
-        this.onTransactionGeneration.next();
-        return result;
-      })
-      .catch((error: Error) => console.log(error));
+        .then((result: any) => {
+          this.onTransactionGeneration.next();
+          return result;
+        })
+        .catch((error: Error) => console.log(error))
+    );
   }
 
   /**
@@ -211,6 +217,40 @@ export class FibonacciService {
 
   getBlockByBlockHash(blockHash: string) {
     return this.connectionService.window.web3.eth.getBlock(blockHash);
+  }
+
+  async insertTransactionOrCallToDB(insertedData: TransactionData | CallData) {
+    await addDoc(
+      collection(this.firestore, this.getDocumentText(insertedData)),
+      {
+        insertedData,
+      }
+    );
+  }
+
+  getAllTransactionOrCallFromDb(document: string) {
+    return getDocs(
+      collection(this.firestore, document)
+    );
+  }
+
+  getTransactionsOrCallsByNetworkFromDb(
+    document: string,
+    newtworkId: number
+  ) {
+    const q = query(
+      collection(this.firestore, document),
+      where('newtworkId', '!=', newtworkId)
+    );
+    return getDocs(q);
+  }
+
+  private getDocumentText(insertedData: TransactionData | CallData): string {
+    return this.isTransactionData(insertedData) ? 'transactions' : 'calls';
+  }
+
+  private isTransactionData(insertedData: CallData | TransactionData) {
+    return (insertedData as TransactionData).gasPrice !== undefined;
   }
   /*
   decodeParameters(value: string, type: string) {
