@@ -22,6 +22,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FibogeneratorComponent } from './components/info/fibogenerator/fibogenerator.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ResultpanelComponent } from './components/info/resultpanel/resultpanel.component';
+import { DataChartsComponent } from './components/info/data-charts/data-charts.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { ResultpanelComponent } from './components/info/resultpanel/resultpanel.
     AuthComponent,
     FibogeneratorComponent,
     ResultpanelComponent,
+    DataChartsComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ import { ResultpanelComponent } from './components/info/resultpanel/resultpanel.
     MatTableModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgChartsModule,
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
   ],

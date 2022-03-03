@@ -11,8 +11,8 @@ export class FibogeneratorComponent implements OnInit {
   @Output() callFibonacciEventEmitter = new EventEmitter<number>();
   @Output() generateFibonacciEventEmitter = new EventEmitter<number>();
 
-  callValue = new FormControl([5], Validators.required)
-  generateValue = new FormControl([5], Validators.required)
+  callValue = new FormControl(5, Validators.required)
+  generateValue = new FormControl(5, Validators.required)
 
   constructor() {
     this.isFiboContractAvailable = false;

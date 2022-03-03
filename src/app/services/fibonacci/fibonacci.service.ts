@@ -221,32 +221,34 @@ export class FibonacciService {
 
   async insertTransactionOrCallToDB(insertedData: TransactionData | CallData) {
     await addDoc(
-      collection(this.firestore, this.getDocumentText(insertedData)),
+      collection(this.firestore, this.getDocumentTypeText(insertedData)),
       {
-        insertedData,
+        ...insertedData,
       }
     );
   }
 
-  getAllTransactionOrCallFromDb(document: string) {
+  getAllTransactionOrCallFromDb(documentType: string) {
     return getDocs(
-      collection(this.firestore, document)
+      collection(this.firestore, documentType)
     );
   }
 
   getTransactionsOrCallsByNetworkFromDb(
-    document: string,
+    documentType: string,
     newtworkId: number
   ) {
-    const q = query(
-      collection(this.firestore, document),
-      where('newtworkId', '!=', newtworkId)
+    const networkQuery = query(
+      collection(this.firestore, documentType),
+      where('networkId', '==', newtworkId)
     );
-    return getDocs(q);
+    console.log(networkQuery);
+
+    return getDocs(networkQuery);
   }
 
-  private getDocumentText(insertedData: TransactionData | CallData): string {
-    return this.isTransactionData(insertedData) ? 'transactions' : 'calls';
+  private getDocumentTypeText(insertedData: TransactionData | CallData): string {
+    return this.isTransactionData(insertedData) ? FibonacciService.TRANSACTIONS : FibonacciService.CALLS;
   }
 
   private isTransactionData(insertedData: CallData | TransactionData) {
