@@ -18,6 +18,8 @@ export class InfoComponent implements OnInit, OnDestroy {
   networkData?: NetworkData;
   transactionData: TransactionData | null = null;
   callData: CallData | null = null;
+  transactionsFromDb: Array<TransactionData> = [];
+  callsFromDb: Array<CallData> = [];
 
   private subscriptions: Subscription = new Subscription();
 
@@ -25,7 +27,7 @@ export class InfoComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private networkService: NetworkService,
     private fibonacciService: FibonacciService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
   ) {}
 
   ngOnInit(): void {
@@ -57,24 +59,25 @@ export class InfoComponent implements OnInit, OnDestroy {
   async getAllInformation(): Promise<void> {
     await this.getUserAndNetworkData();
     await this.setContract();
-    const transactions =
-      await this.fibonacciService.getAllTransactionOrCallFromDb(
-        FibonacciService.TRANSACTIONS
-      );
+    await this.getTransactionsFromDb();
+    await this.getCallsFromDb();
+  }
+
+  private async getCallsFromDb() {
     const calls = await this.fibonacciService.getAllTransactionOrCallFromDb(
       FibonacciService.CALLS
     );
-    const transactionsByNetwork =
-      await this.fibonacciService.getTransactionsOrCallsByNetworkFromDb(
-        FibonacciService.TRANSACTIONS,
-        this.networkData!.id
-      );
-    const callsByNetwork =
-      await this.fibonacciService.getTransactionsOrCallsByNetworkFromDb(
-        FibonacciService.CALLS,
-        this.networkData!.id
-      );
-    console.log(transactions, calls, transactionsByNetwork, callsByNetwork);
+
+    this.callsFromDb = [];
+    calls.forEach((doc: any) => this.callsFromDb.push(doc));
+  }
+
+  private async getTransactionsFromDb() {
+    const transactions = await this.fibonacciService.getAllTransactionOrCallFromDb(
+      FibonacciService.TRANSACTIONS
+    );
+    this.transactionsFromDb = [];
+    transactions.forEach((doc: any) => this.transactionsFromDb.push(doc.data()));
   }
 
   async getUserData(): Promise<void> {
@@ -99,6 +102,7 @@ export class InfoComponent implements OnInit, OnDestroy {
       this.userData!.address
     );
     this.setCallData(startTime, fibres, value);
+    await this.getCallsFromDb();
   }
 
   private setCallData(startTime: number, fibres: any, value: number) {
@@ -122,6 +126,7 @@ export class InfoComponent implements OnInit, OnDestroy {
     );
     if (!fibTransactionRes) return;
     await this.setTransactionData(fibTransactionRes, value, generationTime);
+    await this.getTransactionsFromDb();
   }
 
   private async setTransactionData(
