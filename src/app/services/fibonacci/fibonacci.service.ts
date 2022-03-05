@@ -1,5 +1,5 @@
 import { CallData } from './../../models/callData';
-import { TransactionData } from './../../models/transactionData';
+import { Transaction } from '../../models/transaction';
 import { Injectable } from '@angular/core';
 import { ConnectionService } from '../connection/connection.service';
 import { Subject } from 'rxjs';
@@ -219,7 +219,7 @@ export class FibonacciService {
     return this.connectionService.window.web3.eth.getBlock(blockHash);
   }
 
-  async insertTransactionOrCallToDB(insertedData: TransactionData | CallData) {
+  async insertTransactionOrCallToDB(insertedData: Transaction | CallData) {
     await addDoc(
       collection(this.firestore, this.getDocumentTypeText(insertedData)),
       {
@@ -247,12 +247,12 @@ export class FibonacciService {
     return getDocs(networkQuery);
   }
 
-  private getDocumentTypeText(insertedData: TransactionData | CallData): string {
+  private getDocumentTypeText(insertedData: Transaction | CallData): string {
     return this.isTransactionData(insertedData) ? FibonacciService.TRANSACTIONS : FibonacciService.CALLS;
   }
 
-  private isTransactionData(insertedData: CallData | TransactionData) {
-    return (insertedData as TransactionData).gasPrice !== undefined;
+  private isTransactionData(insertedData: CallData | Transaction) {
+    return (insertedData as Transaction).gasPrice !== undefined;
   }
   /*
   decodeParameters(value: string, type: string) {

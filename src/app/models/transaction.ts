@@ -1,4 +1,4 @@
-export interface TransactionData {
+export interface Transaction {
   result: number,
   blockNumber: number,
   gasPrice: number,

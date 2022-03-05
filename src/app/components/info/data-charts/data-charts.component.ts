@@ -1,50 +1,53 @@
-import { MappedTransaction } from './../../../models/mappedTransaction';
+import { NetworkDataForChart } from '../../../models/NetworkDataForChart';
+import { TransactionDataForChart } from '../../../models/TransactionDataForChart';
 import { CallData } from './../../../models/callData';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { TransactionData } from 'src/app/models/transactionData';
-import { ChartDataset, ScatterDataPoint } from 'chart.js';
+import { Transaction } from 'src/app/models/transaction';
+import { concat } from 'rxjs';
 
 @Component({
   selector: 'app-data-charts',
   templateUrl: './data-charts.component.html',
-  styleUrls: ['./data-charts.component.sass']
+  styleUrls: ['./data-charts.component.sass'],
 })
 export class DataChartsComponent implements OnInit, OnChanges {
-  @Input() transactions: Array<TransactionData> = [];
+  @Input() transactions: Array<Transaction> = [];
   @Input() calls: Array<CallData> = [];
 
-  constructor() { }
+  constructor() {}
 
   public chartOptions = {
-    scaleShowVerticalLines: false,
-    responsive: true
+    scaleShowVerticalLines: true,
+    responsive: true,
   };
   public chartLabels: number[] = [];
   public chartType = 'line';
   public chartLegend = true;
-  public chartData = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'}
-    // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
-  ];
-  ngOnInit() {
-  }
+  public chartData = [{ data: [{x:1,y:1}], label: '' }];
+
+  ngOnInit() {}
 
   ngOnChanges() {
-    const transactionMap: Map<number,MappedTransaction> = new Map();
-    this.transactions.forEach((transaction: TransactionData) => {
-      const mappedTransaction = transactionMap.get(transaction.fiboValue)
-      if(!mappedTransaction) {
-        transactionMap.set(transaction.fiboValue, new MappedTransaction(transaction.gasPrice, transaction.blockMiningDuration));
-      } else {
-        mappedTransaction.addValues(transaction.gasPrice,transaction.blockMiningDuration);
-      }
-    })
-    const data: Array<number> = [];
-    transactionMap.forEach((value: MappedTransaction, key: number) => {
-      this.chartLabels.push(key);
-      data.push(value.getAvgGasPrice())
-    })
-    this.chartData = [{data: data, label: 'Series A'}]
-  }
+    this.chartData = [];
 
+    const trnasactionCollectors: Array<NetworkDataForChart> = [];
+    this.transactions.forEach((currentTransaction: Transaction) => {
+      const transsactionCollector = trnasactionCollectors.find(
+        (element) => element.networkId == currentTransaction.networkId
+      );
+      if (transsactionCollector) {
+        transsactionCollector.addTransasction(currentTransaction);
+      } else {
+        trnasactionCollectors.push(
+          new NetworkDataForChart(currentTransaction)
+        );
+      }
+
+    });
+    trnasactionCollectors.forEach((trnasactionCollector) => {
+      this.chartData.push(trnasactionCollector.getPriceDatas());
+      this.chartLabels = trnasactionCollector.getLabels();
+    });
+    //this.chartData.push({data: [{3},4,8,35]})
+  }
 }

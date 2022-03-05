@@ -1,5 +1,5 @@
 import { CallData } from './../../../models/callData';
-import { TransactionData } from './../../../models/transactionData';
+import { Transaction } from '../../../models/transaction';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -9,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ResultpanelComponent implements OnInit {
   @Input() callData: CallData | null = null;
-  @Input() transactionData: TransactionData | null = null;
+  @Input() transactionData: Transaction | null = null;
 
   constructor() { }
 

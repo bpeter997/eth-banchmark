@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { InfoComponent } from './components/info/info.component';
 import { UserdataComponent } from './components/info/userdata/userdata.component';
 import { NetworkdetailsComponent } from './components/info/networkdetails/networkdetails.component';
@@ -45,6 +46,7 @@ import { NgChartsModule } from 'ng2-charts';
     MatIconModule,
     MatInputModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatTableModule,
     HttpClientModule,
     ReactiveFormsModule,

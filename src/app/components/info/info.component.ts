@@ -1,5 +1,5 @@
 import { CallData } from './../../models/callData';
-import { TransactionData } from './../../models/transactionData';
+import { Transaction } from '../../models/transaction';
 import { NetworkService } from './../../services/network/network.service';
 import { UserService } from './../../services/user/user.service';
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
@@ -16,9 +16,9 @@ import { Subscription } from 'rxjs';
 export class InfoComponent implements OnInit, OnDestroy {
   userData?: UserData;
   networkData?: NetworkData;
-  transactionData: TransactionData | null = null;
+  transactionData: Transaction | null = null;
   callData: CallData | null = null;
-  transactionsFromDb: Array<TransactionData> = [];
+  transactionsFromDb: Array<Transaction> = [];
   callsFromDb: Array<CallData> = [];
 
   private subscriptions: Subscription = new Subscription();
