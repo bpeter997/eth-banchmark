@@ -1,5 +1,5 @@
 import { CallData } from './../../models/callData';
-import { Transaction } from '../../models/transaction';
+import { TransactionData } from '../../models/transaction';
 import { NetworkService } from './../../services/network/network.service';
 import { UserService } from './../../services/user/user.service';
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
@@ -16,9 +16,9 @@ import { Subscription } from 'rxjs';
 export class InfoComponent implements OnInit, OnDestroy {
   userData?: UserData;
   networkData?: NetworkData;
-  transactionData: Transaction | null = null;
+  transactionData: TransactionData | null = null;
   callData: CallData | null = null;
-  transactionsFromDb: Array<Transaction> = [];
+  transactionsFromDb: Array<TransactionData> = [];
   callsFromDb: Array<CallData> = [];
 
   private subscriptions: Subscription = new Subscription();
@@ -67,9 +67,8 @@ export class InfoComponent implements OnInit, OnDestroy {
     const calls = await this.fibonacciService.getAllTransactionOrCallFromDb(
       FibonacciService.CALLS
     );
-
     this.callsFromDb = [];
-    calls.forEach((doc: any) => this.callsFromDb.push(doc));
+    calls.forEach((doc: any) => this.callsFromDb.push(doc.data()));
   }
 
   private async getTransactionsFromDb() {

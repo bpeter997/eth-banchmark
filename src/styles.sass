@@ -1,3 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming'
+
+@include mat-core()
+
+$app-primary: mat-palette($mat-indigo)
+$app-accent: mat-palette($mat-pink, A200, A100, A400)
+
+$app-theme: mat-light-theme($app-primary, $app-accent)
+
+@mixin mix-app-theme($app-theme)
+  $primary: map-get($app-theme, primary)
+  $accent: map-get($app-theme, accent)
+
+  .mat-button-toggle
+    background-color: mat-color($primary)
+    color: #ffffff
+    width: 120px
+
+  .mat-button-toggle-checked
+    background-color: mat-color($accent)
+    color: #ffffff
+
+// Include the mixin
+@include mix-app-theme($app-theme)
+
 body
   overflow: hidden

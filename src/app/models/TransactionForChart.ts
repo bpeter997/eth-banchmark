@@ -1,20 +1,20 @@
-import { Transaction } from "./transaction";
+import { TransactionData } from "./transaction";
 
-export class TransactionDataForChart {
+export class TransactionForChart {
 
   private _gasPrice: number;
   private _fiboValue: number;
   private _blockMiningDuration: number;
   private _counterOfIncreases: number;
 
-  constructor(transaction: Transaction) {
+  constructor(transaction: TransactionData) {
     this._fiboValue = transaction.fiboValue;
     this._gasPrice = transaction.gasPrice;
     this._blockMiningDuration = transaction.blockMiningDuration;
     this._counterOfIncreases = 1;
   }
 
-  public addValues(transaction: Transaction) {
+  public addValues(transaction: TransactionData) {
     this._gasPrice += transaction.gasPrice;
     this._blockMiningDuration += transaction.blockMiningDuration;
     this._counterOfIncreases++;

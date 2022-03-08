@@ -1,7 +1,11 @@
 <div id="ChartContainer">
-  <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-    <mat-button-toggle color="primary" value="GAS">Gas price</mat-button-toggle>
-    <mat-button-toggle color="primary" value="DURATION">Mining duration</mat-button-toggle>
+  <mat-button-toggle-group class="button" id="ChartViewButtonGroup" (change)="onChartViewButtonGroup($event)" name="fontStyle" aria-label="Font Style" value="{{transactionsAreVisible}}">
+    <mat-button-toggle value="true">Transactions</mat-button-toggle>
+    <mat-button-toggle value="false">Calls</mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-button-toggle-group class="button" *ngIf="transactionsAreVisible" id="TransanctionViewButtonGroup" (change)="onTransactionViewButtonGroup($event)" name="fontStyle" aria-label="Font Style" value="{{isPriceDataSetActive}}">
+    <mat-button-toggle value="true">Gas price</mat-button-toggle>
+    <mat-button-toggle value="false">Mining duration</mat-button-toggle>
   </mat-button-toggle-group>
   <div style="display: block">
     <canvas
