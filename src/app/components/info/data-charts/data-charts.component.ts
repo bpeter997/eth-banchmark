@@ -13,6 +13,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 export class DataChartsComponent implements OnInit, OnChanges {
   @Input() transactions: Array<TransactionData> = [];
   @Input() calls: Array<CallData> = [];
+  @Input() networks: Map<number, string> = new Map<number, string>();
 
   isPriceDataSetActive: boolean = true;
   transactionsAreVisible: boolean = true;
@@ -26,7 +27,7 @@ export class DataChartsComponent implements OnInit, OnChanges {
       y: {
         ticks: {
           callback: (value: any) =>
-            (!this.isPriceDataSetActive || !this.transactionsAreVisible)
+            !this.isPriceDataSetActive || !this.transactionsAreVisible
               ? value + ' sec'
               : value + ' wei',
         },
@@ -126,6 +127,7 @@ export class DataChartsComponent implements OnInit, OnChanges {
       network.addTransasction(currentTransaction);
     } else {
       const newNetwork = new NetworkForChart(currentTransaction);
+      newNetwork.networkName = this.networks.get(currentTransaction.networkId)!;
       newNetwork.addTransasction(currentTransaction);
       networks.push(newNetwork);
     }
@@ -143,6 +145,7 @@ export class DataChartsComponent implements OnInit, OnChanges {
       network.addCall(currentCall);
     } else {
       const newNetwork = new NetworkForChart(currentCall);
+      newNetwork.networkName = this.networks.get(currentCall.networkId)!;
       newNetwork.addCall(currentCall);
       networks.push(newNetwork);
     }

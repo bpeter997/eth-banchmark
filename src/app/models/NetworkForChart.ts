@@ -6,11 +6,13 @@ import { CallForChart } from './CallForChart';
 export class NetworkForChart {
   private _sorted: boolean = false;
   private _networkId: number;
+  private _networkName: string;
   private _transactionsGrouppedByNetwork: Array<TransactionForChart>;
   private _callsGrouppedByNetwork: Array<CallForChart>;
 
   constructor(data: TransactionData | CallData) {
     this._networkId = data.networkId;
+    this._networkName = '';
     this._transactionsGrouppedByNetwork = [];
     this._callsGrouppedByNetwork = [];
   }
@@ -50,17 +52,13 @@ export class NetworkForChart {
   }
 
   public addCall(call: CallData) {
-    const matchingCallSummaryCollector =
-      this._callsGrouppedByNetwork.find(
-        (callSummaryCollector) =>
-          callSummaryCollector.fiboValue == call.fiboValue
-      );
+    const matchingCallSummaryCollector = this._callsGrouppedByNetwork.find(
+      (callSummaryCollector) => callSummaryCollector.fiboValue == call.fiboValue
+    );
     if (matchingCallSummaryCollector) {
       matchingCallSummaryCollector.addValues(call);
     } else {
-      this._callsGrouppedByNetwork.push(
-        new CallForChart(call)
-      );
+      this._callsGrouppedByNetwork.push(new CallForChart(call));
     }
     this._sorted = false;
   }
@@ -73,7 +71,7 @@ export class NetworkForChart {
         y: transactionSummary.getAvgGasPrice(),
       })
     );
-    return { data: priceDatas, label: this._networkId.toString() };
+    return { data: priceDatas, label: this._networkName };
   }
 
   public getMiningDurationData() {
@@ -84,19 +82,17 @@ export class NetworkForChart {
         y: transactionSummary.getAvgBlockMiningDuration(),
       })
     );
-    return { data: durationDatas, label: this._networkId.toString() };
+    return { data: durationDatas, label: this._networkName };
   }
 
-  public getCalculationDurationData(){
+  public getCalculationDurationData() {
     if (!this._sorted) this.sortTransactionAndCallSummaryCollector();
-    const durationDatas = this._callsGrouppedByNetwork.map(
-      (callSummary) => ({
-        x: callSummary.fiboValue,
-        y: callSummary.getAvgCalculationMiningDuration(),
-      })
-    );
+    const durationDatas = this._callsGrouppedByNetwork.map((callSummary) => ({
+      x: callSummary.fiboValue,
+      y: callSummary.getAvgCalculationMiningDuration(),
+    }));
 
-    return { data: durationDatas, label: this._networkId.toString() };
+    return { data: durationDatas, label: this._networkName };
   }
 
   public getLabelsForTransactions() {
@@ -113,5 +109,9 @@ export class NetworkForChart {
 
   public get networkId() {
     return this._networkId;
+  }
+
+  public set networkName(name: string) {
+    this._networkName = name;
   }
 }

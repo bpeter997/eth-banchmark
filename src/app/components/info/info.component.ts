@@ -20,6 +20,7 @@ export class InfoComponent implements OnInit, OnDestroy {
   callData: CallData | null = null;
   transactionsFromDb: Array<TransactionData> = [];
   callsFromDb: Array<CallData> = [];
+  networks: Map<number, string> = new Map<number, string>();
 
   private subscriptions: Subscription = new Subscription();
 
@@ -27,7 +28,7 @@ export class InfoComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private networkService: NetworkService,
     private fibonacciService: FibonacciService,
-    private ngZone: NgZone,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +60,7 @@ export class InfoComponent implements OnInit, OnDestroy {
   async getAllInformation(): Promise<void> {
     await this.getUserAndNetworkData();
     await this.setContract();
+    await this.getNetworkInfos();
     await this.getTransactionsFromDb();
     await this.getCallsFromDb();
   }
@@ -72,11 +74,22 @@ export class InfoComponent implements OnInit, OnDestroy {
   }
 
   private async getTransactionsFromDb() {
-    const transactions = await this.fibonacciService.getAllTransactionOrCallFromDb(
-      FibonacciService.TRANSACTIONS
-    );
+    const transactions =
+      await this.fibonacciService.getAllTransactionOrCallFromDb(
+        FibonacciService.TRANSACTIONS
+      );
     this.transactionsFromDb = [];
-    transactions.forEach((doc: any) => this.transactionsFromDb.push(doc.data()));
+    transactions.forEach((doc: any) =>
+      this.transactionsFromDb.push(doc.data())
+    );
+  }
+
+  private async getNetworkInfos() {
+    const networks = await this.networkService.getNetworksName();
+    networks!.forEach((doc: any) => {
+      this.networks.set(+doc.id, doc.data().name);
+    });
+    console.log(this.networks);
   }
 
   async getUserData(): Promise<void> {
