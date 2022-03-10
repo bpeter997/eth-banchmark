@@ -89,7 +89,6 @@ export class InfoComponent implements OnInit, OnDestroy {
     networks!.forEach((doc: any) => {
       this.networks.set(+doc.id, doc.data().name);
     });
-    console.log(this.networks);
   }
 
   async getUserData(): Promise<void> {
