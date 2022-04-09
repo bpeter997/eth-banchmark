@@ -141,7 +141,8 @@ export class FibonacciService {
           from: userAddress,
           gas: 1500000,
           gasPrice: this.connectionService.window.web3.utils.toWei(
-            '0.00000005',
+            //'0.00000005',
+            '0.0',
             'ether'
           ),
         })
@@ -208,6 +209,7 @@ export class FibonacciService {
   }
 
   getFibSeriesFromContract(value: number, from: string): Promise<any> {
+    console.log(this.fiboContract.methods);
     return this.fiboContract.methods.fibseries(value - 1).call({ from: from });
   }
 
